@@ -1,4 +1,4 @@
-const baseUrl = "http://127.0.0.1:3000";
+const baseUrl = "http://54.167.138.205:3000";
 const token = localStorage.getItem("token");
 const logout = document.getElementById("logout");
 const form = document.getElementById("groupDetailsForm");
