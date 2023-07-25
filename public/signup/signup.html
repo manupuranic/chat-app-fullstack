@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mchat App</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;0,600;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <!-- <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Chat Application</a>
+      </div>
+    </nav> -->
+    <main>
+      <div class="body-div">
+        <div class="chat-image">
+          <h1 class="heading">Mchat App</h1>
+          <img
+            src="../assets/undraw_texting_re_l11n.svg"
+            id="svg-image"
+            alt="chat"
+          />
+        </div>
+        <div class="form-body">
+          <div class="container rounded signup-form shadow-sm">
+            <h2 class="heading">Sign Up</h2>
+            <p class="" id="message">test</p>
+            <form action="" method="POST" id="signUpForm">
+              <label for="username" class="form-label">UserName:</label>
+              <input
+                type="text"
+                name="userName"
+                id="username"
+                class="form-control"
+                autofocus="true"
+              />
+              <label for="email" class="form-label">Email:</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                class="form-control"
+              />
+              <label for="phone" class="form-label">Phone:</label>
+              <input
+                type="number"
+                name="phone"
+                id="phone"
+                class="form-control"
+              />
+              <label for="password" class="form-label">Password:</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                class="form-control"
+              />
+              <input type="submit" value="Sign Up" class="btn btn-lg rounded" />
+              <p>
+                Existing user?
+                <a href="../login/login.html" class="page">Login</a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./signup.js"></script>
+  </body>
+</html>

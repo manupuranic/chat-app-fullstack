@@ -1,0 +1,181 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.body-div {
+  display: flex;
+}
+
+.body-div h1 {
+  margin-top: 2rem;
+}
+
+#svg-image {
+  width: 80%;
+  position: relative;
+  top: 10%;
+  animation: shake 1s;
+  animation-iteration-count: infinite;
+  transition-timing-function: ease-in-out;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateY(1px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(1px);
+  }
+}
+
+#menu {
+  margin-left: 5px;
+  display: inline-flex;
+  position: fixed;
+}
+
+#brand {
+  cursor: pointer;
+}
+
+.container {
+  background-color: #ffffff;
+  margin: 2rem auto 1rem auto;
+  padding: 2rem;
+  border: 2px solid #0171cd;
+  width: 80%;
+}
+
+.form-body {
+  width: 40%;
+  background-color: #0171cd;
+  height: 100vh;
+}
+
+input {
+  margin-bottom: 2px;
+}
+
+label {
+  margin-top: 5px;
+}
+
+.heading {
+  text-align: center;
+  color: #0171cd;
+}
+
+.btn {
+  margin: 10px 0;
+  background-color: #0171cd;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #0180e8;
+  color: white;
+}
+
+#logout {
+  background-color: rgb(222, 4, 4);
+  margin-left: 10px;
+  width: fit-content;
+}
+
+#logout:hover {
+  background-color: red;
+}
+
+#newgroup {
+  width: fit-content;
+  margin-left: 10px;
+}
+
+@media (max-width: 900px) {
+  .btn {
+    width: 100%;
+  }
+
+  .container {
+    width: 90%;
+  }
+
+  .body-div {
+    display: block;
+  }
+  .form-body {
+    padding-top: 10%;
+    width: 100vw;
+  }
+  #svg-image {
+    display: none;
+  }
+}
+
+#message {
+  text-align: center;
+  color: white;
+}
+
+.error {
+  background-color: orangered;
+}
+
+.success {
+  background-color: #03a503;
+}
+
+.page {
+  text-decoration: none;
+  color: #0171cd;
+}
+
+.page:hover {
+  color: #0180e8;
+}
+
+#user-container {
+  position: absolute;
+  background-color: #f9fcff;
+  top: 0%;
+  left: 55px;
+  z-index: 999;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.users {
+  cursor: pointer;
+}
+
+.users:hover {
+  background-color: #0180e8;
+  color: #ffffff;
+}
+
+.form-container {
+  margin: 0.5rem auto 0 auto;
+  width: 100%;
+}
+
+#user-container::-webkit-scrollbar {
+  width: 0.2rem;
+}
+
+#user-container::-webkit-scrollbar-track {
+  background: #f1f1f100;
+}
+
+#user-container::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #0171cd;
+  outline: 1px solid #ffffff;
+}

@@ -1,0 +1,185 @@
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.user-profile {
+  width: 80%;
+  display: inline;
+  color: #0171cd;
+}
+
+#info {
+  float: right;
+  width: fit-content;
+  position: relative;
+}
+
+#settings {
+  display: none;
+  margin-left: 30px;
+  width: fit-content;
+}
+
+#info-div {
+  width: 25%;
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  z-index: 10;
+  top: 50px;
+  right: 20px;
+  overflow: auto;
+}
+#member-count-heading {
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.status {
+  font-size: 0.7rem;
+  float: right;
+}
+
+.member-name {
+  font-size: 1rem;
+}
+
+.admin {
+  color: #47ed31;
+}
+
+.member {
+  color: #778899;
+}
+
+#chat-container {
+  width: 100%;
+  margin-left: 1rem;
+}
+
+#message-container {
+  height: 80%;
+  overflow-y: auto;
+}
+
+#chat-body {
+  position: relative;
+  height: 90vh;
+  display: flex;
+}
+
+#send-message {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+}
+
+.message-send {
+  position: absolute;
+  bottom: 10px;
+  left: 7%;
+  width: 90%;
+}
+
+.message-send input {
+  display: inline;
+  width: 90%;
+  height: 10%;
+  border: 2px solid #0171cd;
+}
+
+.message-send button {
+  display: inline;
+  height: fit-content;
+  padding: 4px;
+  margin-top: 0;
+  margin-left: 4px;
+}
+
+.message-send span {
+  font-weight: 500;
+  font-size: x-large;
+}
+
+.others {
+  background-color: #f9fcff;
+  width: fit-content;
+  margin-top: 0.5rem;
+  padding: 5px;
+}
+
+td {
+  width: 50%;
+}
+
+.right td {
+  text-align: right;
+}
+
+.you {
+  background-color: #0171cd;
+  color: #ffffff;
+  width: fit-content;
+  margin-top: 1%;
+  padding: 5px;
+}
+
+/* Mobile View */
+
+@media (max-width: 900px) {
+  #info-div {
+    width: 60%;
+  }
+  .send-btn {
+    width: 20%;
+  }
+  #user-container {
+    top: 10%;
+  }
+  #menu {
+    display: inline-block;
+    position: inherit;
+    width: fit-content;
+  }
+  #chat-body {
+    display: block;
+    width: 80vw;
+    margin-top: 0;
+  }
+
+  #settings {
+    margin-right: 5px;
+  }
+}
+
+/* Scroll functions */
+
+#message-container::-webkit-scrollbar {
+  width: 0.2rem;
+}
+
+#message-container::-webkit-scrollbar-track {
+  background: #f1f1f100;
+}
+
+#message-container::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #0171cd;
+  outline: 1px solid #ffffff;
+}
+
+#info-div::-webkit-scrollbar {
+  width: 0.2rem;
+}
+
+#info-div::-webkit-scrollbar-track {
+  background: #f1f1f100;
+}
+
+#info-div::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #0171cd;
+  outline: 1px solid #ffffff;
+}

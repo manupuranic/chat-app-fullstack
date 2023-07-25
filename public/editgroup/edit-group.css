@@ -1,0 +1,27 @@
+.add {
+  width: fit-content;
+  float: right;
+}
+
+.btn-admin {
+  margin-right: 4px;
+  background-color: green;
+}
+
+.btn-admin:hover {
+  background-color: #05b805;
+}
+
+body::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+body::-webkit-scrollbar-track {
+  background: #f1f1f100;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #0171cd;
+  outline: 1px solid #ffffff;
+}

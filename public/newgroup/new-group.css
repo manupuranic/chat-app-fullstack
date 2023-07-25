@@ -1,0 +1,17 @@
+#users-model {
+  display: none;
+}
+
+.add {
+  float: right;
+  width: fit-content;
+}
+
+.btn-admin {
+  margin-right: 4px;
+  background-color: green;
+}
+
+.btn-admin:hover {
+  background-color: #05b805;
+}
