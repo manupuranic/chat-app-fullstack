@@ -1,11 +1,11 @@
-const baseUrl = "http://54.167.138.205:3000";
+const baseUrl = "http://localhost:3000";
 
 const loginForm = document.getElementById("loginForm");
 const msg = document.getElementById("message");
 const token = localStorage.getItem("token");
 
 if (token) {
-  window.location.href = "../chat.html";
+  window.location.href = "./chat/chat.html";
 }
 
 const messageHandler = (message, type) => {
@@ -34,7 +34,7 @@ const loginHandler = async (e) => {
       messageHandler(data.message, "success");
       console.log(data);
       localStorage.setItem("token", data.token);
-      window.location.href = "../chat.html";
+      window.location.href = "./chat/chat.html";
     } catch (err) {
       if (err.response.status === 401) {
         messageHandler("Password do not match. Try again", "error");

@@ -1,4 +1,4 @@
-const baseUrl = "http://54.167.138.205:3000";
+const baseUrl = "http://localhost:3000";
 const token = localStorage.getItem("token");
 const logout = document.getElementById("logout");
 const form = document.getElementById("groupDetailsForm");
@@ -13,11 +13,11 @@ const brand = document.getElementById("brand");
 
 logout.addEventListener("click", () => {
   localStorage.removeItem("token");
-  window.location.href = "./login/login.html";
+  window.location.href = "../index.html";
 });
 
 if (!token) {
-  window.location.href = "../login/login.html";
+  window.location.href = "../index.html";
 }
 
 function parseJwt(token) {
@@ -54,7 +54,7 @@ const openGroupChat = (e) => {
   localStorage.setItem("currentGpName", gpName);
   localStorage.setItem("messages", JSON.stringify([]));
   // getChats();
-  window.location.href = "../chat.html";
+  window.location.href = "../chat/chat.html";
   // menuBtn.click();
 };
 
@@ -226,7 +226,7 @@ saveBtn.addEventListener("click", () => {
   localStorage.setItem("currentGpName", gpName);
   localStorage.setItem("messages", JSON.stringify([]));
   // getChats();
-  window.location.href = "../chat.html";
+  window.location.href = "../chat/chat.html";
 });
 
 form.addEventListener("submit", submitHandler);
@@ -236,7 +236,7 @@ brand.addEventListener("click", () => {
   localStorage.setItem("messages", []);
   localStorage.removeItem("currentGpId");
   localStorage.removeItem("currentGpName");
-  window.location.href = "../chat.html";
+  window.location.href = "../chat/chat.html";
   // getChats();
   // form.style.display = "none";
 });
