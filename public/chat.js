@@ -260,4 +260,4 @@ brand.addEventListener("click", () => {
   getChats();
   form.style.display = "none";
 });
-// setInterval(getChats, 1000);
+setInterval(getChats, 1000);
