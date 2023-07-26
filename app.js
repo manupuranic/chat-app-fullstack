@@ -60,9 +60,11 @@ const BOTNAME = "Mchat Bot";
 
 //Run when client connects
 io.on("connection", (socket) => {
-  socket.on("joinRoom", async ({ userId, gpId }) => {
-    console.log("gpId", gpId);
-    const user = await getUserDetails(userId);
+  // Joining the room
+  socket.on("joinRoom", async ({ userId, gpId, userName }) => {
+    // console.log("gpId", gpId);
+    console.log(`${userName} joined ${gpId}`);
+    // const user = await getUserDetails(userId);
     socket.join(gpId);
 
     //Welcome current User
@@ -74,21 +76,11 @@ io.on("connection", (socket) => {
     });
 
     //Broadcast when user connects to chat
-    socket.broadcast.to(gpId).emit("message", {
+    socket.to(gpId).emit("message", {
       userId: -1,
-      message: `${user.userName} has connected to the chat`,
+      message: `${userName} has connected to the chat`,
       userName: BOTNAME,
       gpId: -1,
-    });
-
-    //Broadcast when user disconnects from chat
-    socket.on("disconnect", () => {
-      socket.to(gpId).emit("message", {
-        userId: -1,
-        message: `${user.userName} has left the chat`,
-        userName: BOTNAME,
-        gpId: -1,
-      });
     });
   });
 
@@ -99,7 +91,20 @@ io.on("connection", (socket) => {
       addChat(data.gpId, data.message, data.userId),
     ]);
     console.log(formattedData);
-    socket.broadcast.to(data.gpId).emit("message", formattedData);
+    socket.to(data.gpId).emit("message", formattedData);
+  });
+
+  //Leaving the room
+  socket.on("leaveRoom", ({ userId, gpId, userName }) => {
+    //Broadcast when user disconnects from chat
+    socket.to(gpId).emit("message", {
+      userId: -1,
+      message: `${userName} has left the chat`,
+      userName: BOTNAME,
+      gpId: -1,
+    });
+    console.log(`${userName} left ${gpId}`);
+    socket.leave(gpId);
   });
 });
 

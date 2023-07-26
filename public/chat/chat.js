@@ -55,6 +55,12 @@ function parseJwt(token) {
 }
 
 const openGroupChat = (e) => {
+  const currentGpId = localStorage.getItem("currentGpId");
+  socket.emit("leaveRoom", {
+    userId: currentUser.id,
+    gpId: currentGpId,
+    userName: currentUser.userName,
+  });
   const gpId = e.target.id;
   const gpName = e.target.innerText;
   localStorage.setItem("currentGpId", gpId);
@@ -113,7 +119,11 @@ const displayChats = (chat) => {
 const getChats = async () => {
   tableBody.replaceChildren();
   const gpId = localStorage.getItem("currentGpId");
-  socket.emit("joinRoom", { userId: currentUser.id, gpId: gpId });
+  socket.emit("joinRoom", {
+    userId: currentUser.id,
+    gpId: gpId,
+    userName: currentUser.userName,
+  });
   if (gpId) {
     header.style.display = "flex";
     form.style.display = "block";
