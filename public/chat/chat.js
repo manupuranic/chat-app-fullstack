@@ -19,6 +19,7 @@ const membersList = document.getElementById("members-list");
 const settings = document.getElementById("settings");
 const brand = document.getElementById("brand");
 const header = document.querySelector(".header");
+const fileInput = document.getElementById("file");
 
 if (!token) {
   window.location.href = "../index.html";
@@ -147,29 +148,34 @@ const getGroups = async () => {
 const displayChats = (chat) => {
   const { userId, message, userName } = chat;
   const currentUser = parseJwt(token);
-  const trow = document.createElement("tr");
-  if (currentUser.id === userId) {
-    trow.className = "right";
-    trow.innerHTML = `<td></td>
-                  <td>
-                    <span class="you rounded shadow-sm">${message}</span>
-                  </td>
-    `;
-  } else if (userId == -1) {
-    trow.innerHTML = `<div class="botDiv"><span class="spanName botName">${userName}:</span>
-      <span class="botMessage">${message}</span>
-    </div>`;
+  const li = document.createElement("li");
+  let formattedMessage;
+  if (message.includes("https://")) {
+    formattedMessage = `<div class="chat-image">
+                          <img src=${message} alt="image" />
+                        </div>`;
   } else {
-    trow.innerHTML = `<td>
-                    <div class="others rounded shadow-sm">
-                    <span class="spanName">${userName}</span>
-                    <span class="spanMessage">${message}</span>
-                    </div>
-                    </td>
-                  <td></td>
-  `;
+    formattedMessage = message;
   }
-  tableBody.appendChild(trow);
+  if (currentUser.id === userId) {
+    li.className = "list-group-item you-list";
+    li.innerHTML = `<div class="rounded shadow-sm you">
+                      ${formattedMessage}
+                    </div>`;
+  } else if (userId == -1) {
+    li.className = "list-group-item";
+    li.innerHTML = `<div class="botDiv">
+                      <span class="spanName botName">${userName}:</span>
+                      <span class="botMessage">${formattedMessage}</span>
+                    </div>`;
+  } else {
+    li.className = "list-group-item";
+    li.innerHTML = `<div class="others rounded shadow-sm">
+                    <span class="spanName">${userName}</span>
+                    <span class="spanMessage">${formattedMessage}</span>
+                    </div>`;
+  }
+  tableBody.appendChild(li);
 };
 
 const getChats = async () => {
@@ -335,6 +341,37 @@ brand.addEventListener("click", () => {
   menuBtn.click();
   getChats();
   form.style.display = "none";
+});
+
+// function uploadFile(files) {
+//   console.log(files[0]);
+//   socket.emit("upload", files[0]);
+// }
+
+fileInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  const gpId = localStorage.getItem("currentGpId");
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      // Create a JSON object containing the file name and the file buffer
+      const fileData = {
+        gpId: gpId,
+        userId: currentUser.id,
+        fileName: file.name,
+        fileBuffer: reader.result,
+      };
+      // Send the file data to the server through the socket
+      socket.emit("upload", fileData, (fileUrl) => {
+        displayChats({
+          userId: currentUser.id,
+          message: fileUrl,
+          userName: currentUser.userName,
+        });
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  }
 });
 
 // SOCKET LOGIC

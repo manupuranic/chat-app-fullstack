@@ -60,6 +60,11 @@
   margin-left: 1rem;
 }
 
+#table-body {
+  padding-left: 0;
+  margin: 0;
+}
+
 #message-container {
   height: 75%;
   overflow-y: scroll;
@@ -76,7 +81,9 @@
 }
 
 .botDiv {
+  text-align: center;
   font-size: 0.8rem;
+  margin-top: 10px;
 }
 
 .botMessage {
@@ -91,6 +98,7 @@
 
 .message-send {
   position: absolute;
+  display: flex;
   bottom: 10px;
   left: 7%;
   width: 90%;
@@ -99,7 +107,7 @@
 .message-send input {
   display: inline;
   width: 90%;
-  height: 10%;
+  height: 80%;
   border: 2px solid #0171cd;
 }
 
@@ -109,6 +117,18 @@
   padding: 4px;
   margin-top: 0;
   margin-left: 4px;
+}
+
+#file {
+  display: none;
+}
+
+.attach-pin {
+  cursor: pointer;
+  background-color: #0171cd;
+  color: #ffffff;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .message-send span {
@@ -123,19 +143,15 @@
   padding: 5px;
 }
 
-td {
-  width: 50%;
-  padding: 0;
-}
-
-.right td {
-  text-align: right;
+.you-list {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 5px;
 }
 
 .you {
   background-color: #0171cd;
   color: #ffffff;
-  width: fit-content;
   margin-top: 1%;
   padding: 5px;
 }
@@ -146,8 +162,13 @@ td {
   color: #0171cd;
 }
 
-.table-responsive {
-  max-height: 90%;
+.you img {
+  margin-right: 0;
+}
+
+.chat-image img {
+  width: 225px;
+  border-radius: 10px;
 }
 
 /* Mobile View */
@@ -158,8 +179,15 @@ td {
   }
   .message-send input {
     width: 70%;
+    height: 60%;
+  }
+  .attach-pin {
+    height: fit-content;
   }
   .message-send button {
+    width: fit-content;
+    height: 35px;
+    margin-top: 10px;
   }
   .send-btn {
     width: 20%;
@@ -176,7 +204,8 @@ td {
     display: flex;
     width: 90vw;
     height: 85vh;
-    margin-top: 0;
+    margin: 0;
+    padding: 16px;
   }
 
   #settings {

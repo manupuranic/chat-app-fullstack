@@ -7,12 +7,8 @@ const path = require("path");
 const socketio = require("socket.io");
 
 const sequelize = require("./utils/database");
-const {
-  getUserDetails,
-  addOnlineUsers,
-  getOnlineUsers,
-  deleteOnlineUsers,
-} = require("./utils/userBase");
+const { getUserDetails } = require("./utils/userBase");
+const { storeMultimedia } = require("./utils/multimedia");
 const { addChat } = require("./utils/chatBase");
 
 const userRouter = require("./routes/user");
@@ -106,10 +102,17 @@ io.on("connection", (socket) => {
     }
   });
 
-  // socket.on("sendUsers", (cb) => {
-  //   const users = getOnlineUsers();
-  //   cb(users);
-  // });
+  socket.on("upload", async (fileData, cb) => {
+    console.log("file", fileData);
+    const fileUrl = await storeMultimedia(
+      fileData.fileBuffer,
+      fileData.gpId,
+      fileData.fileName
+    );
+    console.log(fileUrl);
+    addChat(fileData.gpId, fileUrl, fileData.userId);
+    cb(fileUrl);
+  });
 
   //Leaving the room
   socket.on("leaveRoom", ({ userId, gpId, userName }) => {

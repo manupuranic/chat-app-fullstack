@@ -71,14 +71,21 @@
             </div>
           </div>
           <hr />
-          <div id="message-container" class="table-responsive">
-            <table class="table table-borderless">
+          <div id="message-container">
+            <ul id="table-body"></ul>
+            <!-- <table class="table table-borderless">
               <tbody id="table-body"></tbody>
-            </table>
+            </table> -->
           </div>
           <div class="form-container">
             <div class="message-send">
               <form method="POST" id="send-message">
+                <label for="file">
+                  <div class="attach-pin">
+                    <span class="material-symbols-outlined"> attach_file </span>
+                  </div>
+                </label>
+                <input type="file" class="form-control" id="file" />
                 <input type="text" class="form-control" name="message" />
                 <button type="submit" class="btn send-btn">
                   <span class="material-symbols-rounded"> send </span>
