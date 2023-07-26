@@ -148,7 +148,7 @@ label {
   top: 0%;
   left: 55px;
   z-index: 999;
-  height: 100%;
+  height: 90vh;
   overflow-y: scroll;
 }
 
@@ -166,8 +166,15 @@ label {
   width: 100%;
 }
 
+#groups {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #0180e8;
+}
+
 #user-container::-webkit-scrollbar {
   width: 0.2rem;
+  height: 2rem;
 }
 
 #user-container::-webkit-scrollbar-track {

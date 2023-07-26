@@ -7,7 +7,12 @@ const path = require("path");
 const socketio = require("socket.io");
 
 const sequelize = require("./utils/database");
-const { getUserDetails } = require("./utils/userBase");
+const {
+  getUserDetails,
+  addOnlineUsers,
+  getOnlineUsers,
+  deleteOnlineUsers,
+} = require("./utils/userBase");
 const { addChat } = require("./utils/chatBase");
 
 const userRouter = require("./routes/user");
@@ -61,50 +66,65 @@ const BOTNAME = "Mchat Bot";
 //Run when client connects
 io.on("connection", (socket) => {
   // Joining the room
+
   socket.on("joinRoom", async ({ userId, gpId, userName }) => {
     // console.log("gpId", gpId);
-    console.log(`${userName} joined ${gpId}`);
-    // const user = await getUserDetails(userId);
-    socket.join(gpId);
+    if (gpId) {
+      // const user = await getUserDetails(userId);
+      // addOnlineUsers(userId, user.userName);
+      console.log(`${userName} joined ${gpId}`);
+      // const user = await getUserDetails(userId);
+      socket.join(gpId);
 
-    //Welcome current User
-    socket.to(gpId).emit("message", {
-      userId: -1,
-      message: "Welcome to Mchat app",
-      userName: BOTNAME,
-      gpId: -1,
-    });
+      //Welcome current User
+      socket.emit("message", {
+        userId: -1,
+        message: "Welcome to Mchat app",
+        userName: BOTNAME,
+        gpId: -1,
+      });
 
-    //Broadcast when user connects to chat
-    socket.to(gpId).emit("message", {
-      userId: -1,
-      message: `${userName} has connected to the chat`,
-      userName: BOTNAME,
-      gpId: -1,
-    });
+      //Broadcast when user connects to chat
+      socket.to(gpId).emit("message", {
+        userId: -1,
+        message: `${userName} has connected to the chat`,
+        userName: BOTNAME,
+        gpId: -1,
+      });
+    }
   });
 
   socket.on("chatMessage", async (data) => {
     // console.log(data);
-    const [formattedData] = await Promise.all([
-      getUserDetails(data.userId, data.message),
-      addChat(data.gpId, data.message, data.userId),
-    ]);
-    console.log(formattedData);
-    socket.to(data.gpId).emit("message", formattedData);
+    if (data.gpId) {
+      const [formattedData] = await Promise.all([
+        getUserDetails(data.userId, data.message),
+        addChat(data.gpId, data.message, data.userId),
+      ]);
+      console.log(formattedData);
+      socket.to(data.gpId).emit("message", formattedData);
+    }
   });
+
+  // socket.on("sendUsers", (cb) => {
+  //   const users = getOnlineUsers();
+  //   cb(users);
+  // });
 
   //Leaving the room
   socket.on("leaveRoom", ({ userId, gpId, userName }) => {
     //Broadcast when user disconnects from chat
-    socket.to(gpId).emit("message", {
-      userId: -1,
-      message: `${userName} has left the chat`,
-      userName: BOTNAME,
-      gpId: -1,
-    });
-    console.log(`${userName} left ${gpId}`);
-    socket.leave(gpId);
+    if (gpId) {
+      socket.to(gpId).emit("message", {
+        userId: -1,
+        message: `${userName} has left the chat`,
+        userName: BOTNAME,
+        gpId: -1,
+      });
+      console.log(`${userName} left ${gpId}`);
+      socket.leave(gpId);
+      // deleteOnlineUsers(userId);
+    }
   });
 });
 

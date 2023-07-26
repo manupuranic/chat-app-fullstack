@@ -5,8 +5,9 @@
 }
 
 .user-profile {
+  /* height: 90vh; */
   width: 80%;
-  display: inline;
+  /* display: inline; */
   color: #0171cd;
 }
 
@@ -60,14 +61,26 @@
 }
 
 #message-container {
-  height: 80%;
-  overflow-y: auto;
+  height: 75%;
+  overflow-y: scroll;
 }
 
 #chat-body {
   position: relative;
   height: 90vh;
   display: flex;
+}
+
+.botName {
+  color: #0171cd;
+}
+
+.botDiv {
+  font-size: 0.8rem;
+}
+
+.botMessage {
+  color: #778899;
 }
 
 #send-message {
@@ -112,6 +125,7 @@
 
 td {
   width: 50%;
+  padding: 0;
 }
 
 .right td {
@@ -126,11 +140,26 @@ td {
   padding: 5px;
 }
 
+.spanName {
+  display: block;
+  font-size: 0.8rem;
+  color: #0171cd;
+}
+
+.table-responsive {
+  max-height: 90%;
+}
+
 /* Mobile View */
 
 @media (max-width: 900px) {
   #info-div {
     width: 60%;
+  }
+  .message-send input {
+    width: 70%;
+  }
+  .message-send button {
   }
   .send-btn {
     width: 20%;
@@ -144,8 +173,9 @@ td {
     width: fit-content;
   }
   #chat-body {
-    display: block;
-    width: 80vw;
+    display: flex;
+    width: 90vw;
+    height: 85vh;
     margin-top: 0;
   }
 

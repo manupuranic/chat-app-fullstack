@@ -56,7 +56,7 @@ const openGroupChat = (e) => {
   localStorage.setItem("currentGpName", gpName);
   localStorage.setItem("messages", JSON.stringify([]));
   // getChats();
-  window.location.href = "../chat.html";
+  window.location.href = "../chat/chat.html";
   // menuBtn.click();
 };
 

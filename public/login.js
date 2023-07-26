@@ -34,6 +34,7 @@ const loginHandler = async (e) => {
       messageHandler(data.message, "success");
       console.log(data);
       localStorage.setItem("token", data.token);
+      localStorage.setItem("messages", JSON.stringify({}));
       window.location.href = "./chat/chat.html";
     } catch (err) {
       if (err.response.status === 401) {

@@ -9,6 +9,7 @@ const tableBody = document.getElementById("table-body");
 const logout = document.getElementById("logout");
 const newGroup = document.getElementById("newgroup");
 const groupList = document.getElementById("group-list");
+const onlineList = document.getElementById("online-list");
 const menuBtn = document.getElementById("menu-btn");
 const messageContainer = document.getElementById("message-container");
 const info = document.getElementById("info");
@@ -54,7 +55,7 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
-const openGroupChat = (e) => {
+const openGroupChat = async (e) => {
   const currentGpId = localStorage.getItem("currentGpId");
   socket.emit("leaveRoom", {
     userId: currentUser.id,
@@ -67,12 +68,60 @@ const openGroupChat = (e) => {
   localStorage.setItem("currentGpName", gpName);
   profile.replaceChildren();
   profile.appendChild(document.createTextNode(gpName));
-  localStorage.setItem("messages", JSON.stringify([]));
+  // localStorage.setItem("messages", JSON.stringify([]));
   header.style.display = "flex";
-  getChats();
-  getMembers();
   menuBtn.click();
+  getMembers();
+  await getChats();
+  socket.emit("joinRoom", {
+    userId: currentUser.id,
+    gpId: gpId,
+    userName: currentUser.userName,
+  });
 };
+
+// const openPrivateChat = (e) => {
+//   const currentGpId = localStorage.getItem("currentGpId");
+//   socket.emit("leaveRoom", {
+//     userId: currentUser.id,
+//     gpId: currentGpId,
+//     userName: currentUser.userName,
+//   });
+//   const gpId = e.target.id;
+//   const gpName = e.target.innerText;
+//   localStorage.setItem("currentGpId", gpId);
+//   localStorage.setItem("currentGpName", gpName);
+//   profile.replaceChildren();
+//   profile.appendChild(document.createTextNode(gpName));
+//   // localStorage.setItem("messages", JSON.stringify([]));
+//   header.style.display = "flex";
+//   menuBtn.click();
+//   // getPrivateChats();
+//   socket.emit("joinRoom", {
+//     userId: currentUser.id,
+//     gpId: gpId,
+//     userName: currentUser.userName,
+//   });
+// };
+
+// const displayOnlineUsers = (user) => {
+//   const li = document.createElement("li");
+//   li.className = "list-group-item users";
+//   li.id = user.id;
+//   li.appendChild(document.createTextNode(user.userName));
+//   li.addEventListener("click", openPrivateChat);
+//   onlineList.appendChild(li);
+// };
+
+// const getOnlineUsers = () => {
+//   onlineList.replaceChildren();
+//   socket.emit("sendUsers", (users) => {
+//     console.log(users);
+//     users.forEach((user) => {
+//       displayOnlineUsers(user);
+//     });
+//   });
+// };
 
 const displayGroups = (group) => {
   const li = document.createElement("li");
@@ -106,10 +155,17 @@ const displayChats = (chat) => {
                     <span class="you rounded shadow-sm">${message}</span>
                   </td>
     `;
+  } else if (userId == -1) {
+    trow.innerHTML = `<div class="botDiv"><span class="spanName botName">${userName}:</span>
+      <span class="botMessage">${message}</span>
+    </div>`;
   } else {
     trow.innerHTML = `<td>
-                    <span class="others rounded shadow-sm">${userName}: ${message}</span>
-                  </td>
+                    <div class="others rounded shadow-sm">
+                    <span class="spanName">${userName}</span>
+                    <span class="spanMessage">${message}</span>
+                    </div>
+                    </td>
                   <td></td>
   `;
   }
@@ -119,17 +175,19 @@ const displayChats = (chat) => {
 const getChats = async () => {
   tableBody.replaceChildren();
   const gpId = localStorage.getItem("currentGpId");
-  socket.emit("joinRoom", {
-    userId: currentUser.id,
-    gpId: gpId,
-    userName: currentUser.userName,
-  });
+
   if (gpId) {
     header.style.display = "flex";
     form.style.display = "block";
     let localMessages = JSON.parse(localStorage.getItem("messages"));
-    const lastMsgId = localMessages.length
-      ? localMessages[localMessages.length - 1].id
+    let gpMessages;
+    if (localMessages && localMessages[gpId]) {
+      gpMessages = localMessages[gpId];
+    } else {
+      gpMessages = [];
+    }
+    const lastMsgId = gpMessages.length
+      ? gpMessages[gpMessages.length - 1].id
       : -1;
     try {
       const response = await axios.get(
@@ -139,17 +197,16 @@ const getChats = async () => {
         }
       );
       const chats = response.data.chats;
-      console.log(chats);
-      if (localMessages) {
-        localMessages = [...localMessages, ...chats];
+      if (gpMessages) {
+        gpMessages = [...gpMessages, ...chats];
       } else {
-        localMessages = [...chats];
+        gpMessages = [...chats];
       }
-      if (localMessages.length) {
-        while (localMessages.length > 10) {
-          localMessages.shift();
+      if (gpMessages.length) {
+        while (gpMessages.length > 10) {
+          gpMessages.shift();
         }
-        localMessages.forEach((chat) => {
+        gpMessages.forEach((chat) => {
           displayChats({
             userId: chat.userId,
             message: chat.message,
@@ -157,10 +214,8 @@ const getChats = async () => {
             userName: chat.user.userName,
           });
         });
+        localMessages[gpId] = gpMessages;
         localStorage.setItem("messages", JSON.stringify(localMessages));
-      } else {
-        tableBody.innerHTML = `
-    <tr><td><h3 style="text-align: center">No Messages</h3></td></tr>`;
       }
     } catch (err) {
       console.log(err);
@@ -168,17 +223,26 @@ const getChats = async () => {
   } else {
     tableBody.innerHTML = `
     <tr><td><h1 class='heading'>Welcome to Mchat App</h1></td></tr>
-    <tr><td><h3 style="text-align: center">select a group to view messages</h3></td></tr>`;
+    <tr><td><h3 style="text-align: center">Chat in groups or in private</h3></td></tr>`;
   }
 };
 
-const onLoad = () => {
+const onLoad = async () => {
   const gpName = localStorage.getItem("currentGpName");
+  const gpId = localStorage.getItem("currentGpId");
   profile.replaceChildren(gpName);
   header.style.display = "none";
-  getMembers();
-  getChats();
+  if (gpId) {
+    getMembers();
+  }
   getGroups();
+  // getOnlineUsers();
+  await getChats();
+  socket.emit("joinRoom", {
+    userId: currentUser.id,
+    gpId: gpId,
+    userName: currentUser.userName,
+  });
 };
 
 window.addEventListener("DOMContentLoaded", onLoad);
@@ -265,7 +329,7 @@ settings.addEventListener("click", () => {
 
 brand.addEventListener("click", () => {
   header.style.display = "none";
-  localStorage.setItem("messages", []);
+  // localStorage.setItem("messages", []);
   localStorage.removeItem("currentGpId");
   localStorage.removeItem("currentGpName");
   menuBtn.click();
@@ -278,7 +342,6 @@ brand.addEventListener("click", () => {
 // const gpId = localStorage.getItem("currentGpId");
 
 socket.on("message", (data) => {
-  // console.log(data);
   displayChats(data);
   messageContainer.scrollTop = messageContainer.scrollHeight;
 });
