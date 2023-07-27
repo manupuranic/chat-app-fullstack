@@ -4,10 +4,12 @@ const loginForm = document.getElementById("loginForm");
 const msg = document.getElementById("message");
 const token = localStorage.getItem("token");
 
+// If already logged in
 if (token) {
   window.location.href = "./chat/chat.html";
 }
 
+// Function to handle the error and success messages
 const messageHandler = (message, type) => {
   msg.innerText = message;
   msg.className = type;
@@ -17,6 +19,7 @@ const messageHandler = (message, type) => {
   }, 5000);
 };
 
+// Handles the login api
 const loginHandler = async (e) => {
   e.preventDefault();
   const email = e.target.email;

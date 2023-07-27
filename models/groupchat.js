@@ -10,7 +10,6 @@ const GroupChat = sequelize.define("groupchat", {
     allowNull: false,
   },
   name: Sequelize.STRING,
-  NoOfParticipants: Sequelize.INTEGER,
 });
 
 module.exports = GroupChat;

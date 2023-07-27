@@ -1,3 +1,4 @@
+// Importing modules
 require("dotenv").config();
 const http = require("http");
 const express = require("express");
@@ -6,26 +7,31 @@ const cors = require("cors");
 const path = require("path");
 const socketio = require("socket.io");
 
+// Importing helper function files
 const sequelize = require("./utils/database");
 const { getUserDetails } = require("./utils/userBase");
 const { storeMultimedia } = require("./utils/multimedia");
 const { addChat } = require("./utils/chatBase");
 
+// Routers
 const userRouter = require("./routes/user");
 const chatRouter = require("./routes/chat");
 const newGroupRouter = require("./routes/new-group");
 const groupRouter = require("./routes/groups");
 const adminRouter = require("./routes/admin");
 
+// DB models
 const User = require("./models/User");
 const Chat = require("./models/chat");
 const GroupChat = require("./models/groupchat");
 const Admin = require("./models/admin");
 
+// Creating Server
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
+// Middlewares
 app.use(bodyParser.json());
 app.use(
   cors({
@@ -34,6 +40,7 @@ app.use(
   })
 );
 
+// Middleware Routing
 app.use("/user", userRouter);
 app.use("/chat", chatRouter);
 app.use("/new-group", newGroupRouter);
@@ -64,12 +71,8 @@ io.on("connection", (socket) => {
   // Joining the room
 
   socket.on("joinRoom", async ({ userId, gpId, userName }) => {
-    // console.log("gpId", gpId);
     if (gpId) {
-      // const user = await getUserDetails(userId);
-      // addOnlineUsers(userId, user.userName);
       console.log(`${userName} joined ${gpId}`);
-      // const user = await getUserDetails(userId);
       socket.join(gpId);
 
       //Welcome current User
@@ -126,14 +129,15 @@ io.on("connection", (socket) => {
       });
       console.log(`${userName} left ${gpId}`);
       socket.leave(gpId);
-      // deleteOnlineUsers(userId);
     }
   });
 });
 
+// DB Sync and Start Server
 sequelize
   .sync()
   // .sync({ force: true })
+  // .sync({ alter: true })
   .then(() => {
     server.listen(3000);
   })

@@ -1,4 +1,6 @@
 const baseUrl = "http://54.167.138.205:3000";
+
+// DOM selections
 const token = localStorage.getItem("token");
 const logout = document.getElementById("logout");
 const form = document.getElementById("groupDetailsForm");
@@ -11,14 +13,17 @@ const menuBtn = document.getElementById("menu-btn");
 const saveBtn = document.getElementById("save");
 const brand = document.getElementById("brand");
 
+// Authentication
+if (!token) {
+  window.location.href = "../index.html";
+}
+
+// SIDEBAR LOGIC
+
 logout.addEventListener("click", () => {
   localStorage.removeItem("token");
   window.location.href = "../index.html";
 });
-
-if (!token) {
-  window.location.href = "../index.html";
-}
 
 function parseJwt(token) {
   var base64Url = token.split(".")[1];
@@ -52,10 +57,7 @@ const openGroupChat = (e) => {
   const gpName = e.target.innerText;
   localStorage.setItem("currentGpId", gpId);
   localStorage.setItem("currentGpName", gpName);
-  localStorage.setItem("messages", JSON.stringify([]));
-  // getChats();
   window.location.href = "../chat/chat.html";
-  // menuBtn.click();
 };
 
 const displayGroups = (group) => {
@@ -83,13 +85,15 @@ const getGroups = async () => {
 
 document.addEventListener("DOMContentLoaded", getGroups);
 
+// NEW GROUP LOGIC
+
 const deleteUserHandler = async (e) => {
   const btn = e.target;
   const li = e.target.parentElement;
   const gpId = localStorage.getItem("newGroupId");
   const userId = li.id;
   try {
-    const response = await axios.delete(
+    await axios.delete(
       `${baseUrl}/new-group/delete-user?gpId=${gpId}&userId=${userId}`,
       { headers: { Authentication: token } }
     );
@@ -107,14 +111,16 @@ async function removeAdminHandler(e) {
   const gpId = localStorage.getItem("newGroupId");
   const userId = li.id;
   try {
-    const response = await axios.get(
+    await axios.get(
       `${baseUrl}/admin/remove-admin?gpId=${gpId}&userId=${userId}`,
       { headers: { Authentication: token } }
     );
     btn.innerText = "Make Admin";
     btn.removeEventListener("click", removeAdminHandler);
     btn.addEventListener("click", makeAdminHandler);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function makeAdminHandler(e) {
@@ -123,7 +129,7 @@ async function makeAdminHandler(e) {
   const gpId = localStorage.getItem("newGroupId");
   const userId = li.id;
   try {
-    const response = await axios.get(
+    await axios.get(
       `${baseUrl}/admin/make-admin?gpId=${gpId}&userId=${userId}`,
       { headers: { Authentication: token } }
     );
@@ -141,7 +147,7 @@ const addUserHandler = async (e) => {
   const gpId = localStorage.getItem("newGroupId");
   const userId = li.id;
   try {
-    const response = await axios.get(
+    await axios.get(
       `${baseUrl}/new-group/add-user?gpId=${gpId}&userId=${userId}`,
       { headers: { Authentication: token } }
     );
@@ -190,6 +196,7 @@ const getUsers = async () => {
   }
 };
 
+// Enter the group name
 const submitHandler = async (e) => {
   e.preventDefault();
   const groupName = e.target.groupName;
@@ -208,7 +215,6 @@ const submitHandler = async (e) => {
       const gpName = response.data.gp.name;
       localStorage.setItem("newGroupId", gpId);
       localStorage.setItem("newGroupName", gpName);
-      console.log(gpId);
       groupName.value = "";
       groupForm.style.display = "none";
       userModal.style.display = "block";
@@ -219,24 +225,20 @@ const submitHandler = async (e) => {
   }
 };
 
+// Save button function
 saveBtn.addEventListener("click", () => {
   const gpId = localStorage.getItem("newGroupId");
   const gpName = localStorage.getItem("newGroupName");
   localStorage.setItem("currentGpId", gpId);
   localStorage.setItem("currentGpName", gpName);
-  localStorage.setItem("messages", JSON.stringify([]));
-  // getChats();
   window.location.href = "../chat/chat.html";
 });
 
 form.addEventListener("submit", submitHandler);
 
+// on clicking the logo
 brand.addEventListener("click", () => {
-  // header.style.display = "none";
-  localStorage.setItem("messages", []);
   localStorage.removeItem("currentGpId");
   localStorage.removeItem("currentGpName");
   window.location.href = "../chat/chat.html";
-  // getChats();
-  // form.style.display = "none";
 });

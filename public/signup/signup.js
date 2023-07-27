@@ -13,7 +13,6 @@ const messageHandler = (message, type) => {
 
 const signUpHandler = async (event) => {
   event.preventDefault();
-  // console.log(event.target);
   const userName = event.target.userName;
   const email = event.target.email;
   const phone = event.target.phone;

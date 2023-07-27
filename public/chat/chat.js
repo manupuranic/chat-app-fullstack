@@ -69,7 +69,6 @@ const openGroupChat = async (e) => {
   localStorage.setItem("currentGpName", gpName);
   profile.replaceChildren();
   profile.appendChild(document.createTextNode(gpName));
-  // localStorage.setItem("messages", JSON.stringify([]));
   header.style.display = "flex";
   menuBtn.click();
   getMembers();
@@ -80,8 +79,6 @@ const openGroupChat = async (e) => {
     userName: currentUser.userName,
   });
 };
-
-// const openPrivateChat = (e) => {
 //   const currentGpId = localStorage.getItem("currentGpId");
 //   socket.emit("leaveRoom", {
 //     userId: currentUser.id,
@@ -181,17 +178,12 @@ const displayChats = (chat) => {
 const getChats = async () => {
   tableBody.replaceChildren();
   const gpId = localStorage.getItem("currentGpId");
-
   if (gpId) {
     header.style.display = "flex";
     form.style.display = "block";
     let localMessages = JSON.parse(localStorage.getItem("messages"));
-    let gpMessages;
-    if (localMessages && localMessages[gpId]) {
-      gpMessages = localMessages[gpId];
-    } else {
-      gpMessages = [];
-    }
+    let gpMessages =
+      localMessages && localMessages[gpId] ? localMessages[gpId] : [];
     const lastMsgId = gpMessages.length
       ? gpMessages[gpMessages.length - 1].id
       : -1;
@@ -203,11 +195,7 @@ const getChats = async () => {
         }
       );
       const chats = response.data.chats;
-      if (gpMessages) {
-        gpMessages = [...gpMessages, ...chats];
-      } else {
-        gpMessages = [...chats];
-      }
+      gpMessages = gpMessages ? [...gpMessages, ...chats] : [...chats];
       if (gpMessages.length) {
         while (gpMessages.length > 10) {
           gpMessages.shift();
@@ -228,8 +216,12 @@ const getChats = async () => {
     }
   } else {
     tableBody.innerHTML = `
-    <tr><td><h1 class='heading'>Welcome to Mchat App</h1></td></tr>
-    <tr><td><h3 style="text-align: center">Chat in groups or in private</h3></td></tr>`;
+    <li class="list-group-item">
+        <h1 class='heading'>Welcome to Mchat App</h1>
+    </li>
+    <li class="list-group-item">
+        <h3 style="text-align: center">Chat in groups or in private</h3>
+    </li>`;
   }
 };
 
@@ -242,7 +234,6 @@ const onLoad = async () => {
     getMembers();
   }
   getGroups();
-  // getOnlineUsers();
   await getChats();
   socket.emit("joinRoom", {
     userId: currentUser.id,
@@ -335,18 +326,12 @@ settings.addEventListener("click", () => {
 
 brand.addEventListener("click", () => {
   header.style.display = "none";
-  // localStorage.setItem("messages", []);
   localStorage.removeItem("currentGpId");
   localStorage.removeItem("currentGpName");
   menuBtn.click();
   getChats();
   form.style.display = "none";
 });
-
-// function uploadFile(files) {
-//   console.log(files[0]);
-//   socket.emit("upload", files[0]);
-// }
 
 fileInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
@@ -375,8 +360,6 @@ fileInput.addEventListener("change", (event) => {
 });
 
 // SOCKET LOGIC
-
-// const gpId = localStorage.getItem("currentGpId");
 
 socket.on("message", (data) => {
   displayChats(data);
