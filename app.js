@@ -6,12 +6,14 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const socketio = require("socket.io");
+var CronJob = require("cron").CronJob;
 
 // Importing helper function files
 const sequelize = require("./utils/database");
 const { getUserDetails } = require("./utils/userBase");
 const { storeMultimedia } = require("./utils/multimedia");
 const { addChat } = require("./utils/chatBase");
+const { moveChatToArchive } = require("./utils/cron");
 
 // Routers
 const userRouter = require("./routes/user");
@@ -25,6 +27,7 @@ const User = require("./models/User");
 const Chat = require("./models/chat");
 const GroupChat = require("./models/groupchat");
 const Admin = require("./models/admin");
+const ArchiveChat = require("./models/archiveChats");
 
 // Creating Server
 const app = express();
@@ -53,14 +56,30 @@ app.use(express.static(path.join(__dirname, `public`)));
 User.hasMany(Chat);
 Chat.belongsTo(User);
 
+User.hasMany(ArchiveChat);
+ArchiveChat.belongsTo(User);
+
 GroupChat.hasMany(Chat);
 Chat.belongsTo(GroupChat);
+
+GroupChat.hasMany(ArchiveChat);
+ArchiveChat.belongsTo(GroupChat);
 
 User.belongsToMany(GroupChat, { through: "usergroup" });
 GroupChat.belongsToMany(User, { through: "usergroup" });
 
 GroupChat.hasMany(Admin);
 User.hasMany(Admin);
+
+// CRON JOB
+const job = new CronJob(
+  "0 0 * * *",
+  moveChatToArchive,
+  null,
+  true,
+  "Asia/Kolkata"
+);
+job.start();
 
 //SOCKET IO LOGIC
 
@@ -135,9 +154,9 @@ io.on("connection", (socket) => {
 
 // DB Sync and Start Server
 sequelize
-  .sync()
+  // .sync()
   // .sync({ force: true })
-  // .sync({ alter: true })
+  .sync({ alter: true })
   .then(() => {
     server.listen(3000);
   })
