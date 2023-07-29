@@ -1,6 +1,5 @@
 const GroupChat = require("../models/groupchat");
 const User = require("../models/User");
-const Admin = require("../models/admin");
 const sequelize = require("../utils/database");
 
 exports.postNewGroup = async (req, res, next) => {

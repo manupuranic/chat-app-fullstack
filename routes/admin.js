@@ -5,13 +5,13 @@ const adminController = require("../controllers/admin");
 const router = express.Router();
 
 router.get(
-  "/make-admin",
+  "/",
   userAuthentication.authenticateToken,
   adminController.makeAdmin
 );
 
-router.get(
-  "/remove-admin",
+router.delete(
+  "/",
   userAuthentication.authenticateToken,
   adminController.removeAdmin
 );

@@ -107,7 +107,7 @@ const deleteUserHandler = async (e) => {
       e.target.innerText === "Exit Group" &&
       e.target.previousSibling.innerText === "Remove Admin"
     ) {
-      await axios.get(
+      await axios.delete(
         `${baseUrl}/admin/remove-admin?gpId=${gpId}&userId=${userId}`,
         { headers: { Authentication: token } }
       );
@@ -130,7 +130,7 @@ async function removeAdminHandler(e) {
   const gpId = localStorage.getItem("newGroupId");
   const userId = li.id;
   try {
-    await axios.get(
+    await axios.delete(
       `${baseUrl}/admin/remove-admin?gpId=${gpId}&userId=${userId}`,
       { headers: { Authentication: token } }
     );

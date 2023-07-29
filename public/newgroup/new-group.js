@@ -111,10 +111,9 @@ async function removeAdminHandler(e) {
   const gpId = localStorage.getItem("newGroupId");
   const userId = li.id;
   try {
-    await axios.get(
-      `${baseUrl}/admin/remove-admin?gpId=${gpId}&userId=${userId}`,
-      { headers: { Authentication: token } }
-    );
+    await axios.delete(`${baseUrl}/admin?gpId=${gpId}&userId=${userId}`, {
+      headers: { Authentication: token },
+    });
     btn.innerText = "Make Admin";
     btn.removeEventListener("click", removeAdminHandler);
     btn.addEventListener("click", makeAdminHandler);
@@ -129,10 +128,9 @@ async function makeAdminHandler(e) {
   const gpId = localStorage.getItem("newGroupId");
   const userId = li.id;
   try {
-    await axios.get(
-      `${baseUrl}/admin/make-admin?gpId=${gpId}&userId=${userId}`,
-      { headers: { Authentication: token } }
-    );
+    await axios.get(`${baseUrl}/admin?gpId=${gpId}&userId=${userId}`, {
+      headers: { Authentication: token },
+    });
     btn.innerText = "Remove Admin";
     btn.removeEventListener("click", makeAdminHandler);
     btn.addEventListener("click", removeAdminHandler);
