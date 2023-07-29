@@ -29,7 +29,7 @@ exports.makeAdmin = async (req, res, next) => {
 exports.removeAdmin = async (req, res, next) => {
   const gpId = req.query.gpId;
   const userId = req.query.userId;
-  const t = sequelize.transaction();
+  const t = await sequelize.transaction();
 
   try {
     const adminRecord = await Admin.findOne({
