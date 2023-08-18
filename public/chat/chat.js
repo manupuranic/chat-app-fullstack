@@ -1,4 +1,4 @@
-const baseUrl = "http://puranic.in";
+const baseUrl = "https://puranic.in";
 
 const socket = io();
 
