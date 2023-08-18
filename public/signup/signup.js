@@ -1,4 +1,4 @@
-const baseUrl = "http://54.225.244.192";
+const baseUrl = "http://127.0.0.1";
 const signUpForm = document.getElementById("signUpForm");
 const msg = document.getElementById("message");
 
