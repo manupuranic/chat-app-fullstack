@@ -1,4 +1,4 @@
-const baseUrl = "http://54.225.244.192:3000";
+const baseUrl = "http://54.225.244.192";
 
 const socket = io();
 
