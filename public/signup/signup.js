@@ -1,4 +1,4 @@
-const baseUrl = "https://puranic.in";
+const baseUrl = "http://puranic.in";
 const signUpForm = document.getElementById("signUpForm");
 const msg = document.getElementById("message");
 
