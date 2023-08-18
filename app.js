@@ -10,9 +10,9 @@ var CronJob = require("cron").CronJob;
 
 // Importing helper function files
 const sequelize = require("./utils/database");
-const { getUserDetails } = require("./utils/userBase");
+const { getUserDetails } = require("./utils/user-base");
 const { storeMultimedia } = require("./utils/multimedia");
-const { addChat } = require("./utils/chatBase");
+const { addChat } = require("./utils/chat-base");
 const { moveChatToArchive } = require("./utils/cron");
 
 // Routers

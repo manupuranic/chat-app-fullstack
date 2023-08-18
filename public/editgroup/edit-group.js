@@ -1,4 +1,4 @@
-const baseUrl = "http://54.167.138.205:3000";
+const baseUrl = "http://localhost:3000";
 
 // DOM selections
 const token = localStorage.getItem("token");
@@ -130,10 +130,9 @@ async function removeAdminHandler(e) {
   const gpId = localStorage.getItem("newGroupId");
   const userId = li.id;
   try {
-    await axios.delete(
-      `${baseUrl}/admin/remove-admin?gpId=${gpId}&userId=${userId}`,
-      { headers: { Authentication: token } }
-    );
+    await axios.delete(`${baseUrl}/admin?gpId=${gpId}&userId=${userId}`, {
+      headers: { Authentication: token },
+    });
     getUsers();
   } catch (error) {
     console.log(error);
@@ -145,10 +144,9 @@ async function makeAdminHandler(e) {
   const gpId = localStorage.getItem("newGroupId");
   const userId = li.id;
   try {
-    await axios.get(
-      `${baseUrl}/admin/make-admin?gpId=${gpId}&userId=${userId}`,
-      { headers: { Authentication: token } }
-    );
+    await axios.get(`${baseUrl}/admin?gpId=${gpId}&userId=${userId}`, {
+      headers: { Authentication: token },
+    });
     getUsers();
   } catch (error) {
     console.log(error);
