@@ -1,4 +1,4 @@
-const baseUrl = "https://puranic.in";
+const baseUrl = "https://chat.puranic.in";
 
 const loginForm = document.getElementById("loginForm");
 const msg = document.getElementById("message");

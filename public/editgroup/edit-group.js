@@ -1,4 +1,4 @@
-const baseUrl = "https://puranic.in";
+const baseUrl = "https://chat.puranic.in";
 
 // DOM selections
 const token = localStorage.getItem("token");
